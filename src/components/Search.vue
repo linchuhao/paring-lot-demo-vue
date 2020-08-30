@@ -56,6 +56,18 @@
       </template>
     </el-table-column>
   </el-table>
+  <div class="block" style="margin-top:20px;">
+    <el-pagination
+    background
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    :current-page="currentPage"
+    :page-sizes="[2, 4, 6, 8, 10]"
+    :page-size="pageSize"
+    layout="total, sizes,prev, pager, next, jumper"
+    :total="total">
+    </el-pagination>
+</div>
   <el-dialog :title="dialogTitle" :visible.sync="parkingLotInfoVisible" width="45%" @close='cancelDialog()'>
     <el-form :model="parkingLotInfo" label-width="120px" :rules="parkingLotInfoRule" ref="parkingLotInfo">
       <el-form-item label="Name" prop="name">
@@ -122,7 +134,9 @@ export default {
       },
       parkingLots: [],
       indexOfParkingLots: '',
-      msg: 'Welcome to Search page',
+      pageSize: 2,
+      currentPage: 0,
+      total: 0,
       parkingLotName: '',
       parkingLotInfo: {
         id: '',
@@ -141,6 +155,14 @@ export default {
     this.getParkingLots()
   },
   methods: {
+    handleSizeChange (val) {
+      this.pageSize = val
+      this.getParkingLots()
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.getParkingLots()
+    },
     addParkingLot () {
       this.parkingLotInfoVisible = true
       this.dialogTitle = 'add parking lot'
@@ -226,10 +248,10 @@ export default {
       })
     },
     getParkingLots () {
-      api.getParkingLots().then(res => {
+      api.getParkingLots(this.pageSize, this.currentPage).then(res => {
         if (res.status === 200) {
-          this.parkingLots = res.data
-          console.log(this.parkingLots)
+          this.parkingLots = res.data.content
+          this.total = res.data.totalElements
         }
       }).catch(e => {
         console.log(e)

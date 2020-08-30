@@ -3,8 +3,8 @@ let headers = {
   'Content-Type': 'application/json'
 }
 export default {
-  getParkingLots () {
-    return axios.get('http://localhost:8888/parkingLots/', {headers: headers})
+  getParkingLots (size, page) {
+    return axios.get(`http://localhost:8888/parkingLots/?size=${size}&page=${page - 1}`, {headers: headers})
   },
   getParkingLotsByName (parkingLotName) {
     return axios.get(`http://localhost:8888/parkingLots/${parkingLotName}`, {headers: headers})
