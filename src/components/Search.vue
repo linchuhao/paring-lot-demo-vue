@@ -56,7 +56,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog :title="dialogTitle" :visible.sync="parkingLotInfoVisible" width="45%">
+  <el-dialog :title="dialogTitle" :visible.sync="parkingLotInfoVisible" width="45%" @close='cancelDialog()'>
     <el-form :model="parkingLotInfo" label-width="120px" :rules="parkingLotInfoRule" ref="parkingLotInfo">
       <el-form-item label="Name" prop="name">
         <el-input v-model="parkingLotInfo.name" placeholder="parking lot name" autocomplete="off"></el-input>
