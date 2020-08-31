@@ -135,7 +135,7 @@ export default {
       parkingLots: [],
       indexOfParkingLots: '',
       pageSize: 2,
-      currentPage: 0,
+      currentPage: 1,
       total: 0,
       parkingLotName: '',
       parkingLotInfo: {
@@ -238,17 +238,11 @@ export default {
       this.parkingLotInfo = {}
     },
     onSerch () {
-      api.getParkingLotsByName(this.parkingLotName).then(res => {
-        if (res.status === 200) {
-          this.parkingLots = res.data
-          console.log(this.parkingLots)
-        }
-      }).catch(e => {
-        console.log(e)
-      })
+      this.currentPage = 1
+      this.getParkingLots()
     },
     getParkingLots () {
-      api.getParkingLots(this.pageSize, this.currentPage).then(res => {
+      api.getParkingLots(this.pageSize, this.currentPage, this.parkingLotName).then(res => {
         if (res.status === 200) {
           this.parkingLots = res.data.content
           this.total = res.data.totalElements
